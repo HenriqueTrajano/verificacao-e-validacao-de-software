@@ -16,19 +16,15 @@ public class GerenciaLugaresTest {
     }
 
     //Testes de particoes
-
     @ParameterizedTest
     @CsvSource({
-            "F04A12",
-            "F03A02",
-            "F41A02",
+            "F04A12,23",
+            "F03A02,103",
+            "F41A02,223",
     })
-    void testaAssentoOcupado(String assento) {
+    void testaAssentoOcupado(String assento, int quantidadePessoas) {
 
-        if (Integer.parseInt(assento.substring(1, 3)) >= 40 ) {
-            barca.quantAssentOcupados(120);
-        }
-
+        barca.quantAssentOcupados(quantidadePessoas);
         barca.verificaLugar(assento);
 
         int respostaVerdadeira = barca.verificaLugar(assento);
@@ -157,23 +153,6 @@ public class GerenciaLugaresTest {
     }
 
     @Test
-    void testaLIMITOCUP_1() {
-        String assento = "F44A16";
-        barca.quantAssentOcupados(220);
-        int resultadoVerdadeiro = barca.verificaLugar(assento);
-        Assertions.assertEquals(3, resultadoVerdadeiro);
-    }
-
-    @Test
-    void testaLIMITOCUP_2() {
-        String assento = "F44A16";
-        barca.quantAssentOcupados(220);
-        barca.verificaLugar(assento);
-        int resultadoVerdadeiro = barca.verificaLugar(assento);
-        Assertions.assertEquals(1, resultadoVerdadeiro);
-    }
-
-    @Test
     void testaLIMITASSENT1_1() {
         String assento = "F20A14";
         barca.quantAssentOcupados(87);
@@ -192,7 +171,7 @@ public class GerenciaLugaresTest {
     @Test
     void testaLIMITASSENT2_1() {
         String assento = "F39A19";
-        barca.quantAssentOcupados(145);
+        barca.quantAssentOcupados(112);
         int resultadoVerdadeiro = barca.verificaLugar(assento);
         Assertions.assertEquals(2, resultadoVerdadeiro);
     }
@@ -200,38 +179,9 @@ public class GerenciaLugaresTest {
     @Test
     void testaLIMITASSENT2_2() {
         String assento = "F40A19";
-        barca.quantAssentOcupados(145);
+        barca.quantAssentOcupados(112);
         int resultadoVerdadeiro = barca.verificaLugar(assento);
         Assertions.assertEquals(3, resultadoVerdadeiro);
     }
-
-    @Test
-    void testaLIMITASSENT3_1() {
-        String assento = "F18A19";
-        barca.quantAssentOcupados(329);
-        int resultadoVerdadeiro = barca.verificaLugar(assento);
-        Assertions.assertEquals(3, resultadoVerdadeiro);
-    }
-
-    @Test
-    void testaLIMITASSENT3_2() {
-        String assento = "F79G02";
-        barca.quantAssentOcupados(145);
-        int resultadoVerdadeiro = barca.verificaLugar(assento);
-        Assertions.assertEquals(0, resultadoVerdadeiro);
-    }
-
-    
-
-
-
-
-
-    
-
-
-
-
-
 
 }

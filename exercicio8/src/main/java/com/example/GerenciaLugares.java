@@ -3,17 +3,15 @@ package com.example;
 public class GerenciaLugares {
 
     private boolean assentosBarca[][] = new boolean[20][60];
-    private int quantAssentosOcupados; 
-
+    private int quantAssentosOcupados;
 
     public GerenciaLugares() {
         quantAssentosOcupados = 0;
     }
 
-
     // Verificar esse metodo aqui
     public int verificaLugar(String assento) {
-        //Parte do Identificador Invalido
+        // Parte do Identificador Invalido
         if (assento.length() != 6 || assento.charAt(0) != 'F' || assento.charAt(3) != 'A') {
             return 0;
         }
@@ -25,20 +23,21 @@ public class GerenciaLugares {
             return 0;
         }
 
-        //Parte do assento ocupado
-        if (assentosBarca[numeroAssento-1][filaAssento-1]) {
+        // Parte do assento ocupado
+        if (assentosBarca[numeroAssento - 1][filaAssento - 1]) {
             return 1;
         }
 
-        //Parte para verificar a distribuicao de peso
+        // Parte para verificar a distribuicao de peso
         quantAssentosOcupados++;
-        if ((quantAssentosOcupados <= 100 && filaAssento > 20) || (quantAssentosOcupados >= 101 && quantAssentosOcupados <= 200 && filaAssento < 40)) {
+        if ((quantAssentosOcupados <= 100 && filaAssento > 20)
+                || (quantAssentosOcupados >= 101 && quantAssentosOcupados <= 200 && filaAssento < 40)) {
             quantAssentosOcupados--;
             return 2;
         }
 
-        //Parte que confirma o assento
-        assentosBarca[numeroAssento-1][filaAssento-1] = true;
+        // Parte que confirma o assento
+        assentosBarca[numeroAssento - 1][filaAssento - 1] = true;
 
         return 3;
     }
@@ -46,16 +45,48 @@ public class GerenciaLugares {
     public void quantAssentOcupados(int quantidadeAssentos) {
         if (quantidadeAssentos > 0 || quantidadeAssentos <= 1200) {
             int auxQuantidade = 0;
+            boolean auxParticaoPessoas = false;
 
+            if (quantAssentosOcupados < 200) {
+                auxloop:
+                for (int i = 0; i < 60; i++) {
+                    for (int j = 0; j < 20; j++) {
+                        if (quantAssentosOcupados == 200 || auxQuantidade == quantidadeAssentos) {
+                            break auxloop;
+                        } else if (quantAssentosOcupados <= 100) {
+                            if (!assentosBarca[j][i]) {
+                                assentosBarca[j][i] = true;
+                                auxQuantidade++;
+                                quantAssentosOcupados++;
+                            }
+                        } else {
+                            //Passa so uma vez
+                            if (!auxParticaoPessoas) {
+                                auxParticaoPessoas = true;
+                                i = 39;
+                                j = 0;
+                            }
+
+                            if (!assentosBarca[j][i]) {
+                                assentosBarca[j][i] = true;
+                                auxQuantidade++;
+                                quantAssentosOcupados++;
+                            }
+                        }
+                    }
+                }
+            }
+            
             mainloop:
             for (int i = 0; i < 60; i++) {
                 for (int j = 0; j < 20; j++) {
                     if (quantidadeAssentos == auxQuantidade) {
                         break mainloop;
+                    } else if (!assentosBarca[j][i]) {
+                        assentosBarca[j][i] = true;
+                        auxQuantidade++;
+                        quantAssentosOcupados++;
                     }
-                    assentosBarca[j][i] = true;
-                    auxQuantidade++;
-                    quantAssentosOcupados++;
                 }
             }
         }

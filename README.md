@@ -2,6 +2,12 @@
 
 # Trabalho ULA (Circuit Verse)
 
+<br />
+
+<div align="center">
+  <a href="https://circuitverse.org/simulator/embed/trabalho-ula"> ⭅| clique aqui para acessar a ULA |⭆ </a>
+</div>
+
 ### Como utilizá-la corretamente?
 
 <p>Para um correto funcionamento da ULA deve-se colocar os respectivos números de A e B nos inputs na região mais a esquerda do circuito. Eles serão responsáveis por armazenar os operandos da operação, sendo A o primeiro operando e B o segundo operando.</p>
@@ -25,14 +31,14 @@
 </div>
 
 <br />
-<p>O tipo de operação deve ser selecionado nos inputs localizados abaixo dos inputs do operando B, para realizar <strong>uma SOMA (binvert = 0) ou SUBTRAÇÃO (binvert = 1)</strong>, os inputs devem ser respectivamente  <strong>0 0</strong>, para realizar uma operação AND os inputs devem ser respectivamente 0 1, para realizar uma operação OR os inputs devem ser respectivamente <strong>1 0</strong> e para realizar uma operação XOR os inputs devem ser respectivamente <strong>1 1</strong>. Imagem do selecionador de operações (Multiplexador 4x1):</p>
+<p>O tipo de operação deve ser selecionado nos inputs localizados abaixo dos inputs do operando B, para realizar <strong>uma SOMA (binvert = 0) ou SUBTRAÇÃO (binvert = 1)</strong>, os inputs devem ser respectivamente  <strong>0 0</strong>, para realizar uma operação AND os inputs devem ser respectivamente 0 1, para realizar uma operação OR os inputs devem ser respectivamente <strong>1 0</strong> e para realizar uma operação XOR os inputs devem ser respectivamente <strong>1 1</strong>. Imagem do selecionador de operações (conectado ao multiplexador 4x1):</p>
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/69161086/189932391-1531ee46-a96d-4a99-ab03-01707c72684a.png" width="45%">
 </div>
 
 <br />
-<p>Após inserir os operandos e selecionar a operação desejada, deve-se clicar no pulse chamado RESET GERAL, ele será responsável por salvar todos os inputs inseridos. É importante realizar o pulse RESET GERAL antes de qualquer operação a fim de evitar bugs.</p>
+<p>Após inserir os operandos e selecionar a operação desejada, deve-se clicar no pulse chamado RESET GERAL, ele será responsável por salvar todos os inputs inseridos nos registradores. É importante realizar o pulse RESET GERAL antes de qualquer operação a fim de evitar bugs.</p>
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/69161086/189933491-40f31637-b4cc-4b8f-8fc1-1e9d30652ec2.png" width="45%">
@@ -59,6 +65,11 @@
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/69161086/189935119-154f19f3-0599-4ae6-974e-c7592c31f986.png" width="45%">
+</div>
+
+<br />
+<div align="center">
+<p>Para realizar mais operações, basta colocar os novos operandos nos inputs de A e B, podendo acatar exatamente o fluxo descrito anteriormente para desempenhar um novo procedimento.</p>
 </div>
 
 <br />
@@ -106,7 +117,7 @@
 >
 >> A ➤ 10101111 ⟼ A7 HEX
 >>
->> B ➤ 11110101 ⟼ E5 HEX
+>> B ➤ 11110101 ⟼ F5 HEX
 >>
 >> Resultado: 10100101 ⟼ A5 HEX
 <br />

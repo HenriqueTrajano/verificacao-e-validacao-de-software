@@ -21,7 +21,8 @@ public class CentroDistribuicao {
             this.tAlcool1 = tAlcool1;
             this.tAlcool2 = tAlcool2;
 
-            if (tAditivo < 0 || tGasolina < 0 || tAlcool1 < 0 || tAlcool1 != tAlcool2) {
+            if (tAditivo < 0 || tGasolina < 0 || tAlcool1 < 0 || tAlcool1 != tAlcool2 || tAditivo > MAX_ADITIVO ||
+                    tGasolina > MAX_GASOLINA || (tAlcool1 * 2) > MAX_ALCOOL) {
                 throw new IllegalArgumentException("Nao foi possivel instanciar corretamente o centro de distribuicao...");
             }
 
@@ -34,9 +35,11 @@ public class CentroDistribuicao {
     }
 
     public void defineSituacao() {
-        if (tAditivo < 125 || tGasolina < 2500 || tAlcool1 < 625) {
+        if (tAditivo < (MAX_ADITIVO * 0.25) || tGasolina < (MAX_GASOLINA * 0.25) ||
+                (tAlcool1 * 2) < (MAX_ALCOOL * 0.25)) {
             this.status = SITUACAO.EMERGENCIA;
-        } else if (tAditivo < 250 || tGasolina < 5000 || tAlcool1 < 1250) {
+        } else if (tAditivo < (MAX_ADITIVO * 0.50) || tGasolina < (MAX_GASOLINA * 0.50) ||
+                (tAlcool1 * 2) < (MAX_ALCOOL * 0.50)) {
             this.status = SITUACAO.SOBRAVISO;
         } else {
             this.status = SITUACAO.NORMAL;
@@ -102,8 +105,7 @@ public class CentroDistribuicao {
     }
 
     public int recebeAlcool(int qtdade) {
-        //Como vai dividir precisa ser mais de 1 (Tudo eh int)
-        if (qtdade > 1) {
+        if (qtdade > 0) {
             int auxQuantAntiga = this.tAlcool1;
 
             int quantColocada = qtdade / 2;
@@ -111,7 +113,7 @@ public class CentroDistribuicao {
             this.tAlcool1 += quantColocada;
             this.tAlcool2 += quantColocada;
 
-            if (this.tAlcool1 > MAX_ALCOOL) {
+            if ((this.tAlcool1 * 2) > MAX_ALCOOL) {
                 this.tAlcool1 = this.tAlcool2 = MAX_ALCOOL;
             }
 
@@ -124,7 +126,45 @@ public class CentroDistribuicao {
         }
     }
 
-//    public int[] encomendaCombustivel(int qtdade, TIPOPOSTO tipoPosto) {
-//
-//    }
+    public int[] encomendaCombustivel(int qtdade, TIPOPOSTO tipoPosto) {
+
+        int[] resultado = new int[4];
+        int auxAditivo, auxGasolina, auxAlcoolGeral;
+
+        if (this.status == SITUACAO.EMERGENCIA && tipoPosto == TIPOPOSTO.COMUM) {
+            resultado[0] = -14;
+        } else if (qtdade <= 0) {
+            resultado[0] = -7;
+        } else {
+
+            if ((this.status == SITUACAO.SOBRAVISO && tipoPosto == TIPOPOSTO.COMUM) ||
+                    (this.status == SITUACAO.EMERGENCIA)) {
+                qtdade = (int) (qtdade * 0.5);
+            }
+
+            auxAditivo = (int) (qtdade * 0.05);
+            auxGasolina = (int) (qtdade * 0.70);
+            auxAlcoolGeral = (int) (qtdade * 0.25) / 2;
+
+            if ((this.tAditivo - auxAditivo) < 0 || (this.tGasolina - auxGasolina) < 0 ||
+                    (this.tAlcool1 - auxAlcoolGeral) < 0) {
+                resultado[0] = -21;
+                return resultado;
+            }
+
+            this.tAditivo -= auxAditivo;
+            this.tGasolina -= auxGasolina;
+            this.tAlcool1 -= auxAlcoolGeral;
+            this.tAlcool2 -= auxAlcoolGeral;
+
+            this.defineSituacao();
+
+            resultado[0] = this.tAditivo;
+            resultado[1] = this.tGasolina;
+            resultado[2] = this.tAlcool1;
+            resultado[3] = this.tAlcool2;
+        }
+
+        return resultado;
+    }
 }

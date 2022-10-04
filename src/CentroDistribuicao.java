@@ -7,10 +7,10 @@ public class CentroDistribuicao {
     public static final int MAX_GASOLINA = 10000;
     public static final int MAX_ALCOOL = 2500;
 
-    private int tAditivo;
-    private int tGasolina;
-    private int tAlcool1;
-    private int tAlcool2;
+    private double tAditivo;
+    private double tGasolina;
+    private double tAlcool1;
+    private double tAlcool2;
 
     private SITUACAO status;
 
@@ -51,24 +51,24 @@ public class CentroDistribuicao {
     }
 
     public int gettAditivo() {
-        return this.tAditivo;
+        return (int) this.tAditivo;
     }
 
     public int gettGasolina() {
-        return this.tGasolina;
+        return (int) this.tGasolina;
     }
 
     public int gettAlcool1() {
-        return this.tAlcool1;
+        return (int) this.tAlcool1;
     }
 
     public int gettAlcool2() {
-        return this.tAlcool2;
+        return (int) this.tAlcool2;
     }
 
     public int recebeAditivo(int qtdade) {
         if (qtdade > 0) {
-            int auxQuantAntiga = this.tAditivo;
+            double auxQuantAntiga = this.tAditivo;
 
             this.tAditivo += qtdade;
 
@@ -78,7 +78,7 @@ public class CentroDistribuicao {
 
             this.defineSituacao();
 
-            return this.tAditivo - auxQuantAntiga;
+            return (int) (this.tAditivo - auxQuantAntiga);
 
         } else {
             return -1;
@@ -87,7 +87,7 @@ public class CentroDistribuicao {
 
     public int recebeGasolina(int qtdade) {
         if (qtdade > 0) {
-            int auxQuantAntiga = this.tGasolina;
+            double auxQuantAntiga = this.tGasolina;
 
             this.tGasolina += qtdade;
 
@@ -97,7 +97,7 @@ public class CentroDistribuicao {
 
             this.defineSituacao();
 
-            return this.tGasolina - auxQuantAntiga;
+            return (int) (this.tGasolina - auxQuantAntiga);
 
         } else {
             return -1;
@@ -106,9 +106,9 @@ public class CentroDistribuicao {
 
     public int recebeAlcool(int qtdade) {
         if (qtdade > 0) {
-            int auxQuantAntiga = this.tAlcool1;
+            double auxQuantAntiga = this.tAlcool1;
 
-            int quantColocada = qtdade / 2;
+            double quantColocada = qtdade / 2.0;
 
             this.tAlcool1 += quantColocada;
             this.tAlcool2 += quantColocada;
@@ -119,7 +119,7 @@ public class CentroDistribuicao {
 
             this.defineSituacao();
 
-            return (this.tAlcool1 - auxQuantAntiga) * 2;
+            return (int) ((this.tAlcool1 - auxQuantAntiga) * 2);
 
         } else {
             return -1;
@@ -129,22 +129,23 @@ public class CentroDistribuicao {
     public int[] encomendaCombustivel(int qtdade, TIPOPOSTO tipoPosto) {
 
         int[] resultado = new int[4];
-        int auxAditivo, auxGasolina, auxAlcoolGeral;
+        double auxQtdade = qtdade;
+        double auxAditivo, auxGasolina, auxAlcoolGeral;
 
-        if (this.status == SITUACAO.EMERGENCIA && tipoPosto == TIPOPOSTO.COMUM) {
+        if (auxQtdade <= 0) {
             resultado[0] = -14;
-        } else if (qtdade <= 0) {
+        } else if (this.status == SITUACAO.EMERGENCIA && tipoPosto == TIPOPOSTO.COMUM) {
             resultado[0] = -7;
         } else {
 
             if ((this.status == SITUACAO.SOBRAVISO && tipoPosto == TIPOPOSTO.COMUM) ||
                     (this.status == SITUACAO.EMERGENCIA)) {
-                qtdade = (int) (qtdade * 0.5);
+                auxQtdade = auxQtdade * 0.5;
             }
 
-            auxAditivo = (int) (qtdade * 0.05);
-            auxGasolina = (int) (qtdade * 0.70);
-            auxAlcoolGeral = (int) (qtdade * 0.25) / 2;
+            auxAditivo = auxQtdade * 0.05;
+            auxGasolina = auxQtdade * 0.70;
+            auxAlcoolGeral = (auxQtdade * 0.25) / 2;
 
             if ((this.tAditivo - auxAditivo) < 0 || (this.tGasolina - auxGasolina) < 0 ||
                     (this.tAlcool1 - auxAlcoolGeral) < 0) {
@@ -159,10 +160,10 @@ public class CentroDistribuicao {
 
             this.defineSituacao();
 
-            resultado[0] = this.tAditivo;
-            resultado[1] = this.tGasolina;
-            resultado[2] = this.tAlcool1;
-            resultado[3] = this.tAlcool2;
+            resultado[0] = (int) this.tAditivo;
+            resultado[1] = (int) this.tGasolina;
+            resultado[2] = (int) this.tAlcool1;
+            resultado[3] = (int) this.tAlcool2;
         }
 
         return resultado;

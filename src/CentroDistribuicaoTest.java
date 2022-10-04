@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -5,12 +6,15 @@ class CentroDistribuicaoTest {
     private CentroDistribuicao cd;
     @BeforeEach
     void setUp() {
-        cd = new CentroDistribuicao();
+        cd = new CentroDistribuicao(500, 10_000, 1250, 1250);
 
     }
 
     @Test
-    void defineSituacao() {
+    void defineSituacaoGasolinaNormal() {
+        cd.recebeGasolina(50);
+        cd.defineSituacao();
+        Assertions.assertEquals(CentroDistribuicao.SITUACAO.NORMAL, cd.getSituacao());
     }
 
     @Test
